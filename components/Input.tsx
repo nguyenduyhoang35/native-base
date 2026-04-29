@@ -2,11 +2,9 @@ import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Animated,
   Image,
-  NativeSyntheticEvent,
   Pressable,
   StyleSheet,
   TextInput,
-  TextInputFocusEventData,
   TextInputProps,
   View,
 } from 'react-native';
