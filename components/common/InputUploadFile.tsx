@@ -1,4 +1,4 @@
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, View} from 'react-native';
 import {memo} from 'react';
 import {useColors} from 'providers/Theme';
 import {SvgXml} from 'react-native-svg';
@@ -13,6 +13,18 @@ type props = {
   error?: any;
 };
 
+const INPUT_FILE_STYLE = {
+  marginTop: 5,
+  borderWidth: 1,
+  borderStyle: 'solid' as const,
+  borderRadius: 15,
+  height: 56,
+  alignItems: 'center' as const,
+  paddingHorizontal: 16,
+  flexDirection: 'row' as const,
+  justifyContent: 'space-between' as const,
+};
+
 const InputUploadFile = ({onChangeValue, value, placeholder, error}: props) => {
   const colors = useColors();
 
@@ -20,12 +32,11 @@ const InputUploadFile = ({onChangeValue, value, placeholder, error}: props) => {
     <UploadImage
       onChangeValue={onChangeValue}
       style={[
-        styles.inputFile,
-        styles.input,
+        INPUT_FILE_STYLE,
         {borderColor: error ? colors.error : colors.gray},
       ]}>
       {value ? (
-        <View style={styles.imageWrap}>
+        <View className="flex flex-row items-center gap-2.5">
           <Image
             source={{uri: value.uri}}
             width={43}
@@ -33,7 +44,11 @@ const InputUploadFile = ({onChangeValue, value, placeholder, error}: props) => {
             borderRadius={5}
           />
           <Text
-            style={[styles.textImage, {color: colors.input.text}]}
+            style={{
+              maxWidth: '77%',
+              overflow: 'hidden',
+              color: colors.input.text,
+            }}
             numberOfLines={1}
             ellipsizeMode="tail">
             {value.name}
@@ -46,30 +61,5 @@ const InputUploadFile = ({onChangeValue, value, placeholder, error}: props) => {
     </UploadImage>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {marginTop: 5},
-  keyword: {marginTop: 16},
-  inputFile: {
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 15,
-    height: 56,
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  imageWrap: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  textImage: {
-    maxWidth: '77%',
-    overflow: 'hidden',
-  },
-});
 
 export default memo(InputUploadFile);

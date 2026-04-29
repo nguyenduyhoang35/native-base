@@ -13,7 +13,6 @@ import {
   PixelRatio,
   Platform,
   StatusBar,
-  StyleSheet,
 } from 'react-native';
 import {images} from 'assets';
 import {showMessage} from 'react-native-flash-message';
@@ -63,19 +62,15 @@ const SplashScreen = ({children}: PropsWithChildren) => {
   if (!loading) return children as JSX.Element;
   return (
     <ImageBackground
-      style={[
-        styles.root,
-        {paddingTop: Platform.select({ios: 0, android: statusBarHeightDp})},
-      ]}
+      className="flex-1 items-center justify-center"
+      style={{paddingTop: Platform.select({ios: 0, android: statusBarHeightDp})}}
       source={images.BackgroundSplash}>
-      <Image style={styles.image} source={images.LogoSplash} />
+      <Image
+        style={{width: 290, height: 258}}
+        source={images.LogoSplash}
+      />
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  image: {width: 290, height: 258},
-});
 
 export default memo(SplashScreen);

@@ -15,7 +15,6 @@ import {
   Alert,
   PermissionsAndroid,
   View,
-  StyleSheet,
 } from 'react-native';
 import ImagePicker, {Image, Options} from 'react-native-image-crop-picker';
 import {getFileUrl, throwError} from 'utils';
@@ -107,8 +106,11 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
   const child = useMemo(() => {
     if (value?.uri) {
       return (
-        <View style={styles.wrapUpload}>
-          <ImageWithAuth uri={value?.uri} style={styles.previewImage} />
+        <View className="flex flex-row items-center gap-2.5">
+          <ImageWithAuth
+            uri={value?.uri}
+            style={{width: 62, height: 62, borderRadius: 999}}
+          />
           <Text fs={16} fw={500} color={colors.primary}>
             {placeholder ?? translate('profile.change_upload')}
           </Text>
@@ -116,7 +118,7 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
       );
     }
     return (
-      <View style={styles.wrapUpload}>
+      <View className="flex flex-row items-center gap-2.5">
         <SvgXml xml={IconUploadAvatar(colors.primary)} />
         <Text fs={16} fw={500} color={colors.primary}>
           {placeholder ?? translate('profile.upload')}
@@ -134,25 +136,5 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  wrapContent: {
-    flex: 1,
-  },
-  wrapUpload: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  previewImage: {
-    width: 62,
-    height: 62,
-    borderRadius: 999,
-  },
-  wrapField: {
-    gap: 5,
-  },
-});
 
 export default memo(UploadImage);

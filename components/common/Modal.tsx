@@ -37,10 +37,12 @@ const Modal: React.FC<ModalProps> = ({
       animationType={animationType}
       collapsable
       onRequestClose={onClose}>
-      <View style={styles.overlay}>
+      <View className="flex-1 items-center justify-center bg-black/50">
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-        <View style={[styles.container, {backgroundColor: colors.background}]}>
-          <View style={styles.header}>
+        <View
+          className="w-[90%] max-h-[80%] rounded-[20px]"
+          style={{backgroundColor: colors.background}}>
+          <View className="flex-row items-center justify-between pt-5 px-5 mb-5">
             <Text fs={18} fw={600} color={colors.primary}>
               {title}
             </Text>
@@ -48,36 +50,13 @@ const Modal: React.FC<ModalProps> = ({
               <SvgXml xml={IconCloseCircle} fill={colors.primary} />
             </Pressable>
           </View>
-          <View style={[styles.content, bodyStyle]}>{children}</View>
+          <View className="pb-5" style={bodyStyle}>
+            {children}
+          </View>
         </View>
       </View>
     </RNModal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    borderRadius: 20,
-    width: '90%',
-    maxHeight: '80%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    marginBottom: 20,
-  },
-  content: {
-    paddingBottom: 20,
-  },
-});
 
 export default Modal;
