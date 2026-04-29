@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import {
   View,
-  StyleSheet,
   Animated,
   Pressable,
   useWindowDimensions,
@@ -140,20 +139,20 @@ const Select = ({
 
   return (
     <View
-      style={styles.wrapper}
+      className="relative w-full"
       ref={refView}
       onLayout={Platform.select({android: () => {}})}>
       <ButtonAnimated
         onPress={onOpen}
         outline
-        style={[styles.picker, {borderColor}, style]}>
+        style={[PICKER_STYLE, {borderColor}, style]}>
         <Text
           fs={16}
           color={selectedItem ? colors.input.text : colors.input.placeholder}>
           {selectedItem ? selectedItem.label : placeholder}
         </Text>
         <Image
-          style={styles.iconDown}
+          style={{width: 7, height: 4}}
           source={images.input.iconDropdown[mode]}
         />
       </ButtonAnimated>
@@ -161,9 +160,9 @@ const Select = ({
         <PressAnimated
           onPress={onClose}
           style={[
-            styles.mask,
-            showMask ? styles.maskDisplay : styles.maskHidden,
+            MASK_STYLE,
             {
+              display: showMask ? 'flex' : 'none',
               opacity: animatedMask.current,
               transform: [{translateY: translateYMask}],
             },
@@ -175,15 +174,15 @@ const Select = ({
           draggable={false}
           ref={bottomSheet}
           style={[
-            styles.bottomView,
+            BOTTOM_VIEW_STYLE,
             {backgroundColor: colors.background, paddingBottom: bottom || 10},
           ]}>
           <BottomSheet.ScrollView>
             {options.map(item => (
               <Pressable
                 key={item.value}
+                className="p-[15px] border-b"
                 style={[
-                  styles.option,
                   {borderColor: colors.divider},
                   item?.value === selectedItem?.value && {
                     backgroundColor: colors.input.primary20,
@@ -203,60 +202,28 @@ const Select = ({
   );
 };
 
-const styles = StyleSheet.create({
-  wrapper: {
-    width: '100%',
-    position: 'relative',
-  },
-  iconDown: {
-    width: 7,
-    height: 4,
-  },
-  error: {left: 2},
-  picker: {
-    overflow: 'hidden',
-    borderWidth: 1,
-    height: 56,
-    borderRadius: 10,
-    width: '100%',
-    fontSize: 16,
-    paddingHorizontal: 16,
-    justifyContent: 'space-between',
-  },
-  option: {
-    padding: 15,
-    borderBottomWidth: 1,
-  },
-  closeButton: {
-    marginTop: 10,
-    alignItems: 'center',
-    padding: 15,
-  },
-  bottomView: {
-    paddingHorizontal: 0,
-    paddingBottom: 30,
-  },
-  select: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    height: 46,
-    borderBottomWidth: 1,
-    paddingHorizontal: 16,
-  },
-  mask: {
-    position: 'absolute',
-    top: 0,
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  maskDisplay: {
-    display: 'flex',
-  },
-  maskHidden: {
-    display: 'none',
-  },
-});
+const PICKER_STYLE = {
+  overflow: 'hidden' as const,
+  borderWidth: 1,
+  height: 56,
+  borderRadius: 10,
+  width: '100%' as const,
+  fontSize: 16,
+  paddingHorizontal: 16,
+  justifyContent: 'space-between' as const,
+};
+
+const BOTTOM_VIEW_STYLE = {
+  paddingHorizontal: 0,
+  paddingBottom: 30,
+};
+
+const MASK_STYLE = {
+  position: 'absolute' as const,
+  top: 0,
+  flex: 1,
+  width: '100%' as const,
+  height: '100%' as const,
+};
 
 export default memo(Select);

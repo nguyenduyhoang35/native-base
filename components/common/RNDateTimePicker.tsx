@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import {DimensionValue, StyleSheet, TextInputProps, View} from 'react-native';
+import {DimensionValue, TextInputProps, View} from 'react-native';
 import {useColors} from 'providers/Theme';
 import Input from 'components/Input';
 
@@ -75,7 +75,7 @@ const RNDateTimePicker = ({
   }, [formatInputValue, onChangeValue]);
 
   return (
-    <View style={[styles.wrapper, {width: width ?? '100%'}]}>
+    <View className="relative w-full" style={{width: width ?? '100%'}}>
       <Input
         placeholder={placeholder}
         value={inputValue}
@@ -83,7 +83,7 @@ const RNDateTimePicker = ({
         editable={!disabled}
         maxLength={10}
         error={error}
-        style={styles.input}
+        style={INPUT_STYLE}
         placeholderTextColor={colors.input.placeholder}
         onBlur={handleBlur}
       />
@@ -91,21 +91,15 @@ const RNDateTimePicker = ({
   );
 };
 
-export default memo(RNDateTimePicker);
+const INPUT_STYLE = {
+  overflow: 'hidden' as const,
+  borderWidth: 1,
+  height: 56,
+  borderRadius: 10,
+  width: '100%' as const,
+  fontSize: 16,
+  paddingHorizontal: 16,
+  justifyContent: 'flex-start' as const,
+};
 
-const styles = StyleSheet.create({
-  wrapper: {
-    width: '100%',
-    position: 'relative',
-  },
-  input: {
-    overflow: 'hidden',
-    borderWidth: 1,
-    height: 56,
-    borderRadius: 10,
-    width: '100%',
-    fontSize: 16,
-    paddingHorizontal: 16,
-    justifyContent: 'flex-start',
-  },
-});
+export default memo(RNDateTimePicker);

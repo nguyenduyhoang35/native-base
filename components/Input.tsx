@@ -181,7 +181,7 @@ export const InputEmail = memo(function InputEmail({
   });
 
   return (
-    <View style={styles.relative}>
+    <View className="w-full">
       <InputAnimated
         {...props}
         style={[
@@ -284,7 +284,7 @@ export const InputPassword = memo(function InputPassword({
   }, [error, isShow, colors]);
 
   return (
-    <View style={styles.relative}>
+    <View className="w-full">
       <InputAnimated
         {...props}
         style={[
@@ -300,7 +300,9 @@ export const InputPassword = memo(function InputPassword({
         secureTextEntry={!isShow}
         onChangeText={onChangeText}
       />
-      <Pressable style={styles.icon} onPress={onChangeShow}>
+      <Pressable
+        className="absolute w-6 h-6 right-4 top-4"
+        onPress={onChangeShow}>
         {icon}
       </Pressable>
     </View>
@@ -319,9 +321,6 @@ const styles = StyleSheet.create({
   email: {
     paddingRight: 45,
   },
-  relative: {
-    width: '100%',
-  },
   icon: {
     position: 'absolute',
     width: 24,
@@ -329,11 +328,6 @@ const styles = StyleSheet.create({
     right: 16,
     top: 16,
   },
-  iconImage: {
-    width: 24,
-    height: 24,
-  },
-  error: {left: 2},
 });
 
 export default Input;
