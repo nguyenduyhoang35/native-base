@@ -1,6 +1,6 @@
 import {memo} from 'react';
 import ImageWithAuth from './ImageWithAuth';
-import {StyleProp} from 'react-native';
+import {StyleProp, StyleSheet} from 'react-native';
 import {ImageStyle} from 'react-native-fast-image';
 import {useColorScheme} from 'lib/useColorScheme';
 
@@ -25,13 +25,8 @@ const Avatar = ({
   return (
     <ImageWithAuth
       style={[
-        {
-          width: size,
-          height: size,
-          borderRadius,
-          backgroundColor: src ? 'transparent' : colors.primary,
-          margin: padding,
-        },
+        src ? styles.transparent : {backgroundColor: colors.primary},
+        {width: size, height: size, borderRadius, margin: padding},
         style,
       ]}
       resizeMode="cover"
@@ -39,5 +34,11 @@ const Avatar = ({
     />
   );
 };
+
+const styles = StyleSheet.create({
+  transparent: {
+    backgroundColor: 'transparent',
+  },
+});
 
 export default memo(Avatar);
