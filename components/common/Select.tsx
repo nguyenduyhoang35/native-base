@@ -18,9 +18,9 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import Button from 'components/Button';
+import Button from 'components/core/Button';
 import {useColors} from 'providers/Theme';
-import Text from 'components/Text';
+import Text from 'components/core/Text';
 import Portal from 'components/general/Portal';
 import BottomSheet from 'components/general/BottomSheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

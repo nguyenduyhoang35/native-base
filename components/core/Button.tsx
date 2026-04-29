@@ -16,7 +16,7 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native';
-import Text, {FontWeight} from './Text';
+import Text, {FontWeight} from 'components/core/Text';
 import {useColors} from 'providers/Theme';
 
 type Props = {

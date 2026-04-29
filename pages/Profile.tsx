@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import Text from 'components/Text';
+import Text from 'components/core/Text';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Profile = () => {

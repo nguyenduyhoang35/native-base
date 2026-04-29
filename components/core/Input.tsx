@@ -13,7 +13,7 @@ import {IconEmail} from 'assets/svgs/input/email';
 import {useColors} from 'providers/Theme';
 import {PasswordIconHidden, PasswordIconShow} from 'assets/svgs/input/password';
 import {IconUploadCircle} from 'assets/svgs/upload-circle';
-import Text from 'components/Text';
+import Text from 'components/core/Text';
 import UploadImage from 'components/common/UploadImage';
 
 const InputAnimated = Animated.createAnimatedComponent(TextInput);

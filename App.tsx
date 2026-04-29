@@ -7,7 +7,7 @@ import FlashMessage from 'react-native-flash-message';
 import {Platform, StatusBar} from 'react-native';
 import {useEffect} from 'react';
 import {FormProvider} from '@rn-form/form';
-import Text from 'components/Text';
+import Text from 'components/core/Text';
 import SplashScreen from 'components/SplashScreen';
 import 'config/axios';
 import {PortalProvider} from 'components/general/Portal';
