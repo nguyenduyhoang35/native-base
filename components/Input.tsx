@@ -395,4 +395,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Input;
+type InputCompound = typeof Input & {
+  Email: typeof InputEmail;
+  Password: typeof InputPassword;
+  UploadFile: typeof InputUploadFile;
+};
+
+const InputWithStatics = Input as InputCompound;
+InputWithStatics.Email = InputEmail;
+InputWithStatics.Password = InputPassword;
+InputWithStatics.UploadFile = InputUploadFile;
+
+export default InputWithStatics;
