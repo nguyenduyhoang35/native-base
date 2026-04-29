@@ -1,21 +1,17 @@
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import Text from 'components/Text';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Home = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Home</Text>
+    <SafeAreaView className="flex-1">
+      <View className="flex-1 items-center justify-center">
+        <Text fs={24} fw={600}>
+          Home
+        </Text>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {flex: 1},
-  content: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  title: {fontSize: 24, fontWeight: '600'},
-});
 
 export default Home;
