@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {IconEmail} from 'assets/svgs/input/email';
-import {useColors} from 'providers/Theme';
+import {useColorScheme} from 'lib/useColorScheme';
 import {PasswordIconHidden, PasswordIconShow} from 'assets/svgs/input/password';
 import {IconUploadCircle} from 'assets/svgs/upload-circle';
-import Text from 'components/core/Text';
+import {Text} from 'components/nativewindui/Text';
 import UploadImage from 'components/common/UploadImage';
 
 const InputAnimated = Animated.createAnimatedComponent(TextInput);
@@ -40,7 +40,7 @@ const Input = memo(function Input({
 }: Props<TextInputProps>) {
   const animated = useRef(new Animated.Value(0));
   const isFocus = useRef(false);
-  const colors = useColors();
+  const {colors} = useColorScheme();
   const onFocus = useCallback(
     (event: any) => {
       _onFocus?.(event);
@@ -97,15 +97,15 @@ const Input = memo(function Input({
 
   const borderColor = animated.current.interpolate({
     inputRange: [0, 1, 2],
-    outputRange: [colors.gray, colorActive ?? colors.primary, colors.error],
+    outputRange: [colors.grey4, colorActive ?? colors.primary, colors.destructive],
   });
 
   return (
     <InputAnimated
       {...props}
       value={String(props.value ?? '')}
-      style={[styles.root, {borderColor}, {color: colors.input.text}, style]}
-      placeholderTextColor={placeholderTextColor || colors.input.placeholder}
+      style={[styles.root, {borderColor}, {color: colors.foreground}, style]}
+      placeholderTextColor={placeholderTextColor || colors.grey}
       onFocus={onFocus}
       onBlur={onBlur}
       onChangeText={onChangeText}
@@ -125,7 +125,7 @@ export const InputEmail = memo(function InputEmail({
 }: Props<TextInputProps>) {
   const animated = useRef(new Animated.Value(0));
   const isFocus = useRef(false);
-  const colors = useColors();
+  const {colors} = useColorScheme();
   const onFocus = useCallback(
     (event: any) => {
       _onFocus?.(event);
@@ -174,12 +174,12 @@ export const InputEmail = memo(function InputEmail({
 
   const borderColor = animated.current.interpolate({
     inputRange: [0, 1, 2],
-    outputRange: [colors.gray, colors.primary, colors.error],
+    outputRange: [colors.grey4, colors.primary, colors.destructive],
   });
 
   const stroke = animated.current.interpolate({
     inputRange: [0, 1, 2],
-    outputRange: [colors.primary, colors.primary, colors.error],
+    outputRange: [colors.primary, colors.primary, colors.destructive],
   });
 
   return (
@@ -191,10 +191,10 @@ export const InputEmail = memo(function InputEmail({
           styles.email,
           {borderColor},
           style,
-          {backgroundColor: disabled ? colors.input.disabled : undefined},
-          {color: colors.input.text},
+          {backgroundColor: disabled ? colors.grey5 : undefined},
+          {color: colors.foreground},
         ]}
-        placeholderTextColor={colors.input.placeholder}
+        placeholderTextColor={colors.grey}
         keyboardType="email-address"
         onFocus={onFocus}
         onBlur={onBlur}
@@ -203,7 +203,7 @@ export const InputEmail = memo(function InputEmail({
       />
       <SvgXmlAnimated
         style={styles.icon}
-        stroke={disabled ? colors.input.disabled : stroke}
+        stroke={disabled ? colors.grey5 : stroke}
         xml={IconEmail}
       />
     </View>
@@ -222,7 +222,7 @@ export const InputPassword = memo(function InputPassword({
   const [isShow, setIsShow] = useState(false);
   const animated = useRef(new Animated.Value(0));
   const isFocus = useRef(false);
-  const colors = useColors();
+  const {colors} = useColorScheme();
   const onFocus = useCallback(
     (event: any) => {
       _onFocus?.(event);
@@ -275,11 +275,11 @@ export const InputPassword = memo(function InputPassword({
 
   const borderColor = animated.current.interpolate({
     inputRange: [0, 1, 2],
-    outputRange: [colors.gray, colors.primary, colors.error],
+    outputRange: [colors.grey4, colors.primary, colors.destructive],
   });
 
   const icon = useMemo(() => {
-    const color = error ? colors.error : colors.primary;
+    const color = error ? colors.destructive : colors.primary;
     const Icon = isShow ? PasswordIconShow : PasswordIconHidden;
     const prop = isShow ? {stroke: color} : {fill: color};
     return <SvgXml {...prop} xml={Icon} />;
@@ -294,9 +294,9 @@ export const InputPassword = memo(function InputPassword({
           styles.email,
           {borderColor},
           style,
-          {color: colors.input.text},
+          {color: colors.foreground},
         ]}
-        placeholderTextColor={colors.input.placeholder}
+        placeholderTextColor={colors.grey}
         onFocus={onFocus}
         onBlur={onBlur}
         secureTextEntry={!isShow}
@@ -336,14 +336,14 @@ export const InputUploadFile = memo(function InputUploadFile({
   placeholder,
   error,
 }: InputUploadFileProps) {
-  const colors = useColors();
+  const {colors} = useColorScheme();
 
   return (
     <UploadImage
       onChangeValue={onChangeValue}
       style={[
         INPUT_FILE_STYLE,
-        {borderColor: error ? colors.error : colors.gray},
+        {borderColor: error ? colors.destructive : colors.grey4},
       ]}>
       {value ? (
         <View className="flex flex-row items-center gap-2.5">
@@ -354,14 +354,14 @@ export const InputUploadFile = memo(function InputUploadFile({
             borderRadius={5}
           />
           <Text
-            style={[styles.uploadFileName, {color: colors.input.text}]}
+            className="max-w-[77%] overflow-hidden"
             numberOfLines={1}
             ellipsizeMode="tail">
             {value.name}
           </Text>
         </View>
       ) : (
-        <Text color={colors.input.placeholder}>{placeholder}</Text>
+        <Text color="tertiary">{placeholder}</Text>
       )}
       <SvgXml fill={colors.primary} xml={IconUploadCircle} />
     </UploadImage>
@@ -386,10 +386,6 @@ const styles = StyleSheet.create({
     height: 24,
     right: 16,
     top: 16,
-  },
-  uploadFileName: {
-    maxWidth: '77%',
-    overflow: 'hidden',
   },
 });
 

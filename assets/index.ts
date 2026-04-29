@@ -7,7 +7,6 @@ import BottomBarBackground from 'assets/bottom-bar-background.png';
 import BottomBarBackgroundDark from 'assets/bottom-bar-background-dark.png';
 import BorderAvatar from 'assets/border-avatar.png';
 import BorderAvatarSquare from 'assets/border-avatar-square.png';
-import {ModeType} from 'types/user';
 
 export const images = {
   LogoIcon,
@@ -15,13 +14,13 @@ export const images = {
   BackgroundSplash,
   input: {
     iconDropdown: {
-      [ModeType.LIGHT]: IconDropdownDark,
-      [ModeType.DARK]: IconDropdownLight,
+      light: IconDropdownDark,
+      dark: IconDropdownLight,
     },
   },
   bottomBar: {
-    [ModeType.LIGHT]: BottomBarBackground,
-    [ModeType.DARK]: BottomBarBackgroundDark,
+    light: BottomBarBackground,
+    dark: BottomBarBackgroundDark,
   },
   borderAvatar: BorderAvatar,
   borderAvatarSquare: BorderAvatarSquare,

@@ -1,4 +1,3 @@
-import {useColors} from 'providers/Theme';
 import type React from 'react';
 import {useState, useEffect} from 'react';
 import {
@@ -8,6 +7,7 @@ import {
   StyleSheet,
   type ViewStyle,
 } from 'react-native';
+import {useColorScheme} from 'lib/useColorScheme';
 
 interface CustomSwitchProps {
   value?: boolean;
@@ -31,7 +31,7 @@ const Switch: React.FC<CustomSwitchProps> = ({
   thumbSize = 22,
   style,
 }) => {
-  const colors = useColors();
+  const {colors} = useColorScheme();
   const [switchValue, setSwitchValue] = useState(value);
   const [thumbPosition] = useState(new Animated.Value(value ? 1 : 0));
 
@@ -77,20 +77,18 @@ const Switch: React.FC<CustomSwitchProps> = ({
             width,
             height,
             borderRadius,
-            backgroundColor: switchValue
-              ? colors.primary
-              : colors.input.codeInput,
+            backgroundColor: switchValue ? colors.primary : colors.grey3,
           },
           style,
         ]}>
         <Animated.View
           style={[
             thumbStyles.shadow,
+            thumbStyles.thumb,
             {
               width: thumbSize,
               height: thumbSize,
               borderRadius: thumbSize / 2,
-              backgroundColor: colors.white,
               transform: [{translateX}],
             },
           ]}
@@ -106,6 +104,9 @@ const thumbStyles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
+  },
+  thumb: {
+    backgroundColor: '#ffffff',
   },
 });
 

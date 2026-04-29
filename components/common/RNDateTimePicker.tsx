@@ -6,8 +6,8 @@ import React, {
   useMemo,
 } from 'react';
 import {DimensionValue, TextInputProps, View} from 'react-native';
-import {useColors} from 'providers/Theme';
-import {Input} from 'components/core';
+import {useColorScheme} from 'lib/useColorScheme';
+import Input from 'components/core/Input';
 
 type Props = {
   value?: string;
@@ -26,7 +26,7 @@ const RNDateTimePicker = ({
   error,
   width,
 }: PropsWithChildren<Props>) => {
-  const colors = useColors();
+  const {colors} = useColorScheme();
 
   const formattedDate = useMemo(() => {
     if (!value) return '';
@@ -84,7 +84,7 @@ const RNDateTimePicker = ({
         maxLength={10}
         error={error}
         style={INPUT_STYLE}
-        placeholderTextColor={colors.input.placeholder}
+        placeholderTextColor={colors.grey}
         onBlur={handleBlur}
       />
     </View>

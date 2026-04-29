@@ -1,8 +1,8 @@
-import {useColors} from 'providers/Theme';
 import {memo} from 'react';
 import ImageWithAuth from './ImageWithAuth';
 import {StyleProp} from 'react-native';
 import {ImageStyle} from 'react-native-fast-image';
+import {useColorScheme} from 'lib/useColorScheme';
 
 type TAvatar = {
   src?: string;
@@ -20,7 +20,7 @@ const Avatar = ({
   padding = 0,
 }: TAvatar) => {
   const borderRadius = isSquare ? 10 : size;
-  const colors = useColors();
+  const {colors} = useColorScheme();
 
   return (
     <ImageWithAuth
@@ -29,7 +29,7 @@ const Avatar = ({
           width: size,
           height: size,
           borderRadius,
-          backgroundColor: src ? colors.transparent : colors.primary,
+          backgroundColor: src ? 'transparent' : colors.primary,
           margin: padding,
         },
         style,

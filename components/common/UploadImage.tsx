@@ -19,8 +19,8 @@ import {
 import ImagePicker, {Image, Options} from 'react-native-image-crop-picker';
 import {getFileUrl, throwError} from 'utils';
 import ImageWithAuth from './ImageWithAuth';
-import {Text} from 'components/core';
-import {useColors} from 'providers/Theme';
+import {Text} from 'components/nativewindui/Text';
+import {useColorScheme} from 'lib/useColorScheme';
 import {SvgXml} from 'react-native-svg';
 import {IconUploadAvatar} from 'assets/svgs/profile/upload-avatar';
 
@@ -65,7 +65,7 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
   } = props;
   const refWait = useRef(false);
   const {translate} = useLanguage();
-  const colors = useColors();
+  const {colors} = useColorScheme();
 
   const handleChooseImage = async () => {
     if (refWait.current) return;
@@ -111,7 +111,7 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
             uri={value?.uri}
             style={{width: 62, height: 62, borderRadius: 999}}
           />
-          <Text fs={16} fw={500} color={colors.primary}>
+          <Text variant="callout" className="font-medium text-primary">
             {placeholder ?? translate('profile.change_upload')}
           </Text>
         </View>
@@ -120,7 +120,7 @@ const UploadImage = (props: PropsWithChildren<UploadImageProps>) => {
     return (
       <View className="flex flex-row items-center gap-2.5">
         <SvgXml xml={IconUploadAvatar(colors.primary)} />
-        <Text fs={16} fw={500} color={colors.primary}>
+        <Text variant="callout" className="font-medium text-primary">
           {placeholder ?? translate('profile.upload')}
         </Text>
       </View>

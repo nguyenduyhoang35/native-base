@@ -1,18 +1,15 @@
 import {IconHome} from 'assets/svgs/bottom-bar/home';
 import {IconSearch} from 'assets/svgs/bottom-bar/search';
 import {IconUserDefault} from 'assets/svgs/bottom-bar/userDefault';
-import {useColors} from 'providers/Theme';
 import {memo} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {images} from 'assets';
 import {MaterialTopTabBarProps} from '@react-navigation/material-top-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {shallowEqual, useSelector} from 'react-redux';
-import {modeSelector} from 'store/slices/user';
-import {ModeType} from 'types/user';
 import {ScreenName} from 'types/react-navigation';
 import FastImage from 'react-native-fast-image';
+import {useColorScheme} from 'lib/useColorScheme';
 
 type IconRenderer = (active: boolean, color: string) => string;
 
@@ -44,12 +41,11 @@ const BAR_HEIGHT = Platform.select({ios: 64, default: 60}) as number;
 const ICON_SIZE = Platform.select({ios: 44, default: 40}) as number;
 
 const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
-  const colors = useColors();
+  const {colors, colorScheme} = useColorScheme();
   const {bottom} = useSafeAreaInsets();
-  const mode = useSelector(modeSelector, shallowEqual);
 
   const activeName = state.routes[state.index]?.name;
-  const opacityBg = mode === ModeType.DARK ? 0.8 : 0.9;
+  const opacityBg = colorScheme === 'dark' ? 0.8 : 0.9;
 
   return (
     <View
@@ -59,7 +55,7 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
         className="relative w-full max-w-[360px]"
         style={shadowStyle.bar}>
         <FastImage
-          source={images.bottomBar[mode]}
+          source={images.bottomBar[colorScheme]}
           style={[
             shadowStyle.background,
             StyleSheet.absoluteFill,
@@ -80,7 +76,7 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
                 style={{
                   width: ICON_SIZE,
                   height: ICON_SIZE,
-                  backgroundColor: isActive ? colors.white : 'transparent',
+                  backgroundColor: isActive ? '#ffffff' : 'transparent',
                 }}>
                 <SvgXml
                   height={tab.height}

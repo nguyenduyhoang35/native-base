@@ -7,8 +7,8 @@ import {useNavigation} from '@react-navigation/native';
 import {TUseNavigation} from 'types/react-navigation';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {TLanguageKey} from 'languages';
-import {useColors} from 'providers/Theme';
-import {Button, Text} from 'components/core';
+import {Button} from 'components/nativewindui/Button';
+import {Text} from 'components/nativewindui/Text';
 
 export const HEIGHT = 65;
 
@@ -20,44 +20,33 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
   const {options, headerBackStyle} = props;
   const {top} = useSafeAreaInsets();
   const {translate} = useLanguage();
-  const colors = useColors();
   const navigation = useNavigation<TUseNavigation>();
   const canGoBack = navigation.canGoBack();
-  const tintColor = useMemo(
-    () => options?.headerTintColor ?? colors.primary,
-    [colors.primary, options?.headerTintColor],
-  );
 
   const buttonRight = useMemo(() => {
     if (options?.headerRight) return options.headerRight({canGoBack});
     if (!canGoBack || !(options?.headerBackVisible ?? true)) return null;
     return (
       <Button
-        style={[
-          {width: 'auto', paddingHorizontal: 16, minWidth: 90},
-          headerBackStyle,
-          {borderColor: tintColor},
-        ]}
-        outline
+        variant="secondary"
+        size="sm"
         onPress={navigation.goBack}
-        text={options?.headerBackTitle ?? translate('back')}
-        textStyle={[{color: tintColor}, options?.headerBackTitleStyle]}
-        height={36}
-      />
+        style={headerBackStyle as ViewStyle}>
+        <Text>{options?.headerBackTitle ?? translate('back')}</Text>
+      </Button>
     );
   }, [
     canGoBack,
     headerBackStyle,
     navigation.goBack,
     options,
-    tintColor,
     translate,
   ]);
 
   if (!(options?.headerShown ?? true)) return null;
 
   return (
-    <View style={[{backgroundColor: colors.background}, options?.headerStyle]}>
+    <View className="bg-background" style={options?.headerStyle}>
       <View className="px-6" style={{paddingTop: top}}>
         <View
           className="w-full flex-row items-center justify-between pb-5"
@@ -73,11 +62,7 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
           {buttonRight}
         </View>
         {options?.title ? (
-          <Text
-            color={options.headerTintColor || colors.primary}
-            fw={600}
-            fs={24}
-            style={options.headerTitleStyle}>
+          <Text variant="title2" className="text-primary">
             {translate(options.title as TLanguageKey, undefined, options.title)}
           </Text>
         ) : null}

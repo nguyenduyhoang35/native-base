@@ -18,18 +18,15 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import {Button, Text} from 'components/core';
-import {useColors} from 'providers/Theme';
+import {Text} from 'components/nativewindui/Text';
+import {useColorScheme} from 'lib/useColorScheme';
 import Portal from 'components/general/Portal';
 import BottomSheet from 'components/general/BottomSheet';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {shallowEqual, useSelector} from 'react-redux';
-import {modeSelector} from 'store/slices/user';
 import {images} from 'assets';
 import {useSpace} from 'providers/SpaceHeight';
 
 const PressAnimated = Animated.createAnimatedComponent(Pressable);
-const ButtonAnimated = Animated.createAnimatedComponent(Button);
 
 type Props = {
   options: {label: string; value: string; icon?: JSX.Element}[];
@@ -48,8 +45,7 @@ const Select = ({
   error,
   style,
 }: Props) => {
-  const mode = useSelector(modeSelector, shallowEqual);
-  const colors = useColors();
+  const {colors, colorScheme} = useColorScheme();
   const {bottom} = useSafeAreaInsets();
   const bottomSheet = useRef<BottomSheet>(null);
   const [isOpen, setOpen] = useState(false);
@@ -58,7 +54,6 @@ const Select = ({
   const selectedItem = options.find(item => item.value === value);
   const animatedMask = useRef(new Animated.Value(0));
   const [showMask, setShowMask] = useState(false);
-  const animated = useRef(new Animated.Value(0));
   const {height} = useWindowDimensions();
   const onShow = useSpace();
 
@@ -118,43 +113,35 @@ const Select = ({
     };
   }, [isOpen, onOpenBottomSheet, onShow]);
 
-  useEffect(() => {
-    Animated.timing(animated.current, {
-      toValue: error ? 2 : Number(isOpen),
-      duration: 0,
-      useNativeDriver: false,
-    }).start();
-  }, [error, isOpen]);
-
   const translateYMask = animatedMask.current.interpolate({
     inputRange: [0, 0.999, 1],
     outputRange: [height, 0, 0],
   });
 
-  const borderColor = animated.current.interpolate({
-    inputRange: [0, 1, 2],
-    outputRange: [colors.gray, colors.primary, colors.error],
-  });
+  const borderColor = error
+    ? colors.destructive
+    : isOpen
+      ? colors.primary
+      : colors.grey4;
 
   return (
     <View
       className="relative w-full"
       ref={refView}
       onLayout={Platform.select({android: () => {}})}>
-      <ButtonAnimated
+      <Pressable
         onPress={onOpen}
-        outline
         style={[PICKER_STYLE, {borderColor}, style]}>
         <Text
-          fs={16}
-          color={selectedItem ? colors.input.text : colors.input.placeholder}>
+          variant="callout"
+          color={selectedItem ? 'primary' : 'tertiary'}>
           {selectedItem ? selectedItem.label : placeholder}
         </Text>
         <Image
           style={{width: 7, height: 4}}
-          source={images.input.iconDropdown[mode]}
+          source={images.input.iconDropdown[colorScheme]}
         />
-      </ButtonAnimated>
+      </Pressable>
       <Portal>
         <PressAnimated
           onPress={onClose}
@@ -180,18 +167,15 @@ const Select = ({
             {options.map(item => (
               <Pressable
                 key={item.value}
-                className="p-[15px] border-b"
-                style={[
-                  {borderColor: colors.divider},
-                  item?.value === selectedItem?.value && {
-                    backgroundColor: colors.input.primary20,
-                  },
-                ]}
+                className="p-[15px] border-b border-border"
+                style={
+                  item?.value === selectedItem?.value
+                    ? {backgroundColor: colors.grey6}
+                    : undefined
+                }
                 onPress={() => onSelected?.(item.value)}>
                 {item.icon}
-                <Text fs={16} color={colors.input.text}>
-                  {item.label}
-                </Text>
+                <Text variant="callout">{item.label}</Text>
               </Pressable>
             ))}
           </BottomSheet.ScrollView>
@@ -207,8 +191,9 @@ const PICKER_STYLE = {
   height: 56,
   borderRadius: 10,
   width: '100%' as const,
-  fontSize: 16,
   paddingHorizontal: 16,
+  flexDirection: 'row' as const,
+  alignItems: 'center' as const,
   justifyContent: 'space-between' as const,
 };
 

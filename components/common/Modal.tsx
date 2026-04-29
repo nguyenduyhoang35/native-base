@@ -8,8 +8,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {Text} from 'components/core';
-import {useColors} from 'providers/Theme';
+import {Text} from 'components/nativewindui/Text';
+import {useColorScheme} from 'lib/useColorScheme';
 import {IconCloseCircle} from 'assets/svgs/close-circle';
 
 interface ModalProps {
@@ -29,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({
   bodyStyle,
   animationType = 'fade',
 }) => {
-  const colors = useColors();
+  const {colors} = useColorScheme();
   return (
     <RNModal
       visible={!!visible}
@@ -39,11 +39,9 @@ const Modal: React.FC<ModalProps> = ({
       onRequestClose={onClose}>
       <View className="flex-1 items-center justify-center bg-black/50">
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-        <View
-          className="w-[90%] max-h-[80%] rounded-[20px]"
-          style={{backgroundColor: colors.background}}>
+        <View className="w-[90%] max-h-[80%] rounded-[20px] bg-card">
           <View className="flex-row items-center justify-between pt-5 px-5 mb-5">
-            <Text fs={18} fw={600} color={colors.primary}>
+            <Text variant="heading" className="text-primary">
               {title}
             </Text>
             <Pressable onPress={onClose}>
