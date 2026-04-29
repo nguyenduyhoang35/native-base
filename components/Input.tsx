@@ -1,0 +1,339 @@
+import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  Animated,
+  NativeSyntheticEvent,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TextInputFocusEventData,
+  TextInputProps,
+  View,
+} from 'react-native';
+import {SvgXml} from 'react-native-svg';
+import {IconEmail} from 'assets/svgs/input/email';
+import {useColors} from 'providers/Theme';
+import {PasswordIconHidden, PasswordIconShow} from 'assets/svgs/input/password';
+
+const InputAnimated = Animated.createAnimatedComponent(TextInput);
+const SvgXmlAnimated = Animated.createAnimatedComponent(SvgXml);
+
+type Props<T> = {
+  error?: string | boolean;
+  disabled?: boolean;
+  onChangeValue?: (v: string) => void;
+  placeholderTextColor?: string;
+  colorActive?: string;
+} & T;
+
+const Input = memo(function Input({
+  style,
+  placeholderTextColor,
+  onFocus: _onFocus,
+  onBlur: _onBlur,
+  error,
+  onChangeText: _onChangeText,
+  onChangeValue,
+  colorActive,
+  ...props
+}: Props<TextInputProps>) {
+  const animated = useRef(new Animated.Value(0));
+  const isFocus = useRef(false);
+  const colors = useColors();
+  const onFocus = useCallback(
+    (event: any) => {
+      _onFocus?.(event);
+      isFocus.current = true;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onFocus, error],
+  );
+
+  const onBlur = useCallback(
+    (event: any) => {
+      _onBlur?.(event);
+      isFocus.current = false;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onBlur, error],
+  );
+
+  useEffect(() => {
+    Animated.timing(animated.current, {
+      toValue: error ? 2 : Number(isFocus.current),
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  }, [error]);
+
+  useEffect(() => {
+    Animated.timing(animated.current, {
+      toValue: error ? 2 : 0,
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  }, [error]);
+
+  const onChangeText = useCallback(
+    (v: string) => {
+      _onChangeText?.(v);
+      onChangeValue?.(v);
+    },
+    [_onChangeText, onChangeValue],
+  );
+
+  const borderColor = animated.current.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [colors.gray, colorActive ?? colors.primary, colors.error],
+  });
+
+  return (
+    <InputAnimated
+      {...props}
+      value={String(props.value ?? '')}
+      style={[styles.root, {borderColor}, {color: colors.input.text}, style]}
+      placeholderTextColor={placeholderTextColor || colors.input.placeholder}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onChangeText={onChangeText}
+    />
+  );
+});
+
+export const InputEmail = memo(function InputEmail({
+  style,
+  onFocus: _onFocus,
+  onBlur: _onBlur,
+  error,
+  disabled,
+  onChangeText: _onChangeText,
+  onChangeValue,
+  ...props
+}: Props<TextInputProps>) {
+  const animated = useRef(new Animated.Value(0));
+  const isFocus = useRef(false);
+  const colors = useColors();
+  const onFocus = useCallback(
+    (event: any) => {
+      _onFocus?.(event);
+      isFocus.current = true;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onFocus, error],
+  );
+
+  const onBlur = useCallback(
+    (event: any) => {
+      _onBlur?.(event);
+      isFocus.current = false;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onBlur, error],
+  );
+
+  useEffect(() => {
+    Animated.timing(animated.current, {
+      toValue: error ? 2 : Number(isFocus.current),
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  }, [error]);
+
+  const onChangeText = useCallback(
+    (v: string) => {
+      _onChangeText?.(v);
+      onChangeValue?.(v);
+    },
+    [_onChangeText, onChangeValue],
+  );
+
+  const borderColor = animated.current.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [colors.gray, colors.primary, colors.error],
+  });
+
+  const stroke = animated.current.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [colors.primary, colors.primary, colors.error],
+  });
+
+  return (
+    <View style={styles.relative}>
+      <InputAnimated
+        {...props}
+        style={[
+          styles.root,
+          styles.email,
+          {borderColor},
+          style,
+          {backgroundColor: disabled ? colors.input.disabled : undefined},
+          {color: colors.input.text},
+        ]}
+        placeholderTextColor={colors.input.placeholder}
+        keyboardType="email-address"
+        onFocus={onFocus}
+        onBlur={onBlur}
+        editable={!disabled}
+        onChangeText={onChangeText}
+      />
+      <SvgXmlAnimated
+        style={styles.icon}
+        stroke={disabled ? colors.input.disabled : stroke}
+        xml={IconEmail}
+      />
+    </View>
+  );
+});
+
+export const InputPassword = memo(function InputPassword({
+  style,
+  onFocus: _onFocus,
+  onBlur: _onBlur,
+  error,
+  onChangeText: _onChangeText,
+  onChangeValue,
+  ...props
+}: Props<TextInputProps>) {
+  const [isShow, setIsShow] = useState(false);
+  const animated = useRef(new Animated.Value(0));
+  const isFocus = useRef(false);
+  const colors = useColors();
+  const onFocus = useCallback(
+    (event: any) => {
+      _onFocus?.(event);
+      isFocus.current = true;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onFocus, error],
+  );
+
+  const onBlur = useCallback(
+    (event: any) => {
+      _onBlur?.(event);
+      isFocus.current = false;
+      if (!error) {
+        Animated.timing(animated.current, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [_onBlur, error],
+  );
+
+  useEffect(() => {
+    Animated.timing(animated.current, {
+      toValue: error ? 2 : Number(isFocus.current),
+      duration: 0,
+      useNativeDriver: false,
+    }).start();
+  }, [error]);
+
+  const onChangeShow = useCallback(() => {
+    setIsShow(pre => !pre);
+  }, []);
+
+  const onChangeText = useCallback(
+    (v: string) => {
+      _onChangeText?.(v);
+      onChangeValue?.(v);
+    },
+    [_onChangeText, onChangeValue],
+  );
+
+  const borderColor = animated.current.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [colors.gray, colors.primary, colors.error],
+  });
+
+  const icon = useMemo(() => {
+    const color = error ? colors.error : colors.primary;
+    const Icon = isShow ? PasswordIconShow : PasswordIconHidden;
+    const prop = isShow ? {stroke: color} : {fill: color};
+    return <SvgXml {...prop} xml={Icon} />;
+  }, [error, isShow, colors]);
+
+  return (
+    <View style={styles.relative}>
+      <InputAnimated
+        {...props}
+        style={[
+          styles.root,
+          styles.email,
+          {borderColor},
+          style,
+          {color: colors.input.text},
+        ]}
+        placeholderTextColor={colors.input.placeholder}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        secureTextEntry={!isShow}
+        onChangeText={onChangeText}
+      />
+      <Pressable style={styles.icon} onPress={onChangeShow}>
+        {icon}
+      </Pressable>
+    </View>
+  );
+});
+
+const styles = StyleSheet.create({
+  root: {
+    borderWidth: 1,
+    height: 56,
+    borderRadius: 10,
+    padding: 16,
+    width: '100%',
+    fontSize: 16,
+  },
+  email: {
+    paddingRight: 45,
+  },
+  relative: {
+    width: '100%',
+  },
+  icon: {
+    position: 'absolute',
+    width: 24,
+    height: 24,
+    right: 16,
+    top: 16,
+  },
+  iconImage: {
+    width: 24,
+    height: 24,
+  },
+  error: {left: 2},
+});
+
+export default Input;
