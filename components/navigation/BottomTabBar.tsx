@@ -69,6 +69,9 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
             return (
               <Pressable
                 key={tab.name}
+                testID={`tab-${tab.name}`}
+                accessibilityRole="button"
+                accessibilityState={{selected: isActive}}
                 onPress={() => navigation.navigate(tab.name)}
                 style={[
                   styles.icon,
