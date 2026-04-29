@@ -1,8 +1,13 @@
-export const IconHome = (isActive: boolean, colorActive: string) => {
+export const IconHome = (
+  isActive: boolean,
+  colorActive: string,
+  colorDeactive?: string,
+) => {
   if (!isActive) {
+    const stroke = colorDeactive || 'white';
     return `<svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3.77778 13.5H1L13.5 1L26 13.5H23.2222M3.77778 13.5V23.2222C3.77778 23.9589 4.07044 24.6655 4.59137 25.1864C5.1123 25.7073 5.81884 26 6.55556 26H20.4444C21.1812 26 21.8877 25.7073 22.4086 25.1864C22.9296 24.6655 23.2222 23.9589 23.2222 23.2222V13.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M9.33331 26.0003V17.6669C9.33331 16.9302 9.62597 16.2237 10.1469 15.7028C10.6678 15.1818 11.3744 14.8892 12.1111 14.8892H14.8889C15.6256 14.8892 16.3321 15.1818 16.8531 15.7028C17.374 16.2237 17.6666 16.9302 17.6666 17.6669V26.0003" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.77778 13.5H1L13.5 1L26 13.5H23.2222M3.77778 13.5V23.2222C3.77778 23.9589 4.07044 24.6655 4.59137 25.1864C5.1123 25.7073 5.81884 26 6.55556 26H20.4444C21.1812 26 21.8877 25.7073 22.4086 25.1864C22.9296 24.6655 23.2222 23.9589 23.2222 23.2222V13.5" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.33331 26.0003V17.6669C9.33331 16.9302 9.62597 16.2237 10.1469 15.7028C10.6678 15.1818 11.3744 14.8892 12.1111 14.8892H14.8889C15.6256 14.8892 16.3321 15.1818 16.8531 15.7028C17.374 16.2237 17.6666 16.9302 17.6666 17.6669V26.0003" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
   }

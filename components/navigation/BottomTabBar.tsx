@@ -1,115 +1,81 @@
 import {IconHome} from 'assets/svgs/bottom-bar/home';
+import {IconReels} from 'assets/svgs/bottom-bar/reels';
+import {IconFriends} from 'assets/svgs/bottom-bar/friends';
 import {IconSearch} from 'assets/svgs/bottom-bar/search';
+import {IconNotifications} from 'assets/svgs/bottom-bar/notifications';
 import {IconUserDefault} from 'assets/svgs/bottom-bar/userDefault';
 import {memo} from 'react';
-import {Platform, Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {images} from 'assets';
 import {MaterialTopTabBarProps} from '@react-navigation/material-top-tabs';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ScreenName} from 'types/react-navigation';
-import FastImage from 'react-native-fast-image';
 import {useColorScheme} from 'lib/useColorScheme';
+import {Text} from 'components/nativewindui/Text';
 
-type IconRenderer = (active: boolean, color: string) => string;
+type IconRenderer = (
+  active: boolean,
+  colorActive: string,
+  colorDeactive?: string,
+) => string;
 
 type TabConfig = {
   name: ScreenName;
   icon: IconRenderer;
-  height: number;
+  badge?: number;
 };
 
 const TABS: TabConfig[] = [
-  {
-    name: ScreenName.HOME,
-    icon: IconHome,
-    height: Platform.select({ios: 27, default: 20}) as number,
-  },
-  {
-    name: ScreenName.SEARCH,
-    icon: IconSearch,
-    height: Platform.select({ios: 25, default: 22}) as number,
-  },
-  {
-    name: ScreenName.PROFILE,
-    icon: IconUserDefault,
-    height: Platform.select({ios: 27, default: 20}) as number,
-  },
+  {name: ScreenName.HOME, icon: IconHome},
+  {name: ScreenName.REELS, icon: IconReels, badge: 2},
+  {name: ScreenName.FRIENDS, icon: IconFriends},
+  {name: ScreenName.SEARCH, icon: IconSearch},
+  {name: ScreenName.NOTIFICATIONS, icon: IconNotifications},
+  {name: ScreenName.PROFILE, icon: IconUserDefault},
 ];
 
-const BAR_HEIGHT = Platform.select({ios: 64, default: 60}) as number;
-const ICON_SIZE = Platform.select({ios: 44, default: 40}) as number;
-
 const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
-  const {colors, colorScheme} = useColorScheme();
+  const {colors, isDarkColorScheme} = useColorScheme();
   const {bottom} = useSafeAreaInsets();
 
   const activeName = state.routes[state.index]?.name;
-  const opacityBg = colorScheme === 'dark' ? 0.8 : 0.9;
+  const inactiveColor = isDarkColorScheme ? '#b0b3b8' : '#65676b';
 
   return (
     <View
-      className="absolute left-4 right-4 items-center"
-      style={{bottom: bottom + Platform.select({android: 12, default: 6})}}>
-      <View
-        className="relative w-full max-w-[360px]"
-        style={shadowStyle.bar}>
-        <FastImage
-          source={images.bottomBar[colorScheme]}
-          style={[
-            shadowStyle.background,
-            StyleSheet.absoluteFill,
-            {opacity: opacityBg},
-          ]}
-        />
-        <View className="flex-1 flex-row justify-around items-center px-[18px]">
-          {TABS.map(tab => {
-            const isActive = activeName === tab.name;
-            return (
-              <Pressable
-                key={tab.name}
-                testID={`tab-${tab.name}`}
-                accessibilityRole="button"
-                accessibilityState={{selected: isActive}}
-                onPress={() => navigation.navigate(tab.name)}
-                className={`items-center justify-center rounded-full ${
-                  isActive ? 'bg-card' : ''
-                }`}
-                style={iconStyle.size}>
+      className="bg-card border-t border-border"
+      style={{paddingBottom: bottom}}>
+      <View className="flex-row items-center justify-around h-12">
+        {TABS.map(tab => {
+          const isActive = activeName === tab.name;
+          return (
+            <Pressable
+              key={tab.name}
+              testID={`tab-${tab.name}`}
+              accessibilityRole="button"
+              accessibilityState={{selected: isActive}}
+              onPress={() => navigation.navigate(tab.name)}
+              className="flex-1 items-center justify-center h-full">
+              <View>
                 <SvgXml
-                  height={tab.height}
-                  xml={tab.icon(isActive, colors.primary)}
+                  width={26}
+                  height={26}
+                  xml={tab.icon(isActive, colors.primary, inactiveColor)}
                 />
-              </Pressable>
-            );
-          })}
-        </View>
+                {tab.badge ? (
+                  <View className="absolute -top-1 -right-2 bg-destructive rounded-full min-w-[18px] h-[18px] items-center justify-center px-1">
+                    <Text className="text-white text-[11px] font-semibold">
+                      {tab.badge > 99 ? '99+' : tab.badge}
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
     </View>
   );
 };
-
-const shadowStyle = StyleSheet.create({
-  bar: {
-    height: BAR_HEIGHT,
-    shadowColor: '#000',
-    shadowOpacity: 0.18,
-    shadowRadius: 16,
-    shadowOffset: {width: 0, height: 8},
-    elevation: 12,
-  },
-  background: {
-    borderRadius: BAR_HEIGHT / 2,
-    overflow: 'hidden',
-    height: BAR_HEIGHT,
-  },
-});
-
-const iconStyle = StyleSheet.create({
-  size: {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
-  },
-});
 
 export default memo(BottomTabBar);

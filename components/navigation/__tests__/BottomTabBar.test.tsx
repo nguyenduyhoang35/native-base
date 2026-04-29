@@ -12,10 +12,20 @@ jest.mock('react-native-fast-image', () => 'FastImage');
 const buildState = (index: number) => ({
   index,
   key: 'tab-test',
-  routeNames: [ScreenName.HOME, ScreenName.SEARCH, ScreenName.PROFILE],
+  routeNames: [
+    ScreenName.HOME,
+    ScreenName.REELS,
+    ScreenName.FRIENDS,
+    ScreenName.SEARCH,
+    ScreenName.NOTIFICATIONS,
+    ScreenName.PROFILE,
+  ],
   routes: [
     {key: 'home', name: ScreenName.HOME},
+    {key: 'reels', name: ScreenName.REELS},
+    {key: 'friends', name: ScreenName.FRIENDS},
     {key: 'search', name: ScreenName.SEARCH},
+    {key: 'notifications', name: ScreenName.NOTIFICATIONS},
     {key: 'profile', name: ScreenName.PROFILE},
   ],
   type: 'tab',
@@ -53,7 +63,10 @@ describe('BottomTabBar', () => {
   it('renders one button per tab', () => {
     const {getByTestId} = renderBar();
     expect(getByTestId(`tab-${ScreenName.HOME}`)).toBeTruthy();
+    expect(getByTestId(`tab-${ScreenName.REELS}`)).toBeTruthy();
+    expect(getByTestId(`tab-${ScreenName.FRIENDS}`)).toBeTruthy();
     expect(getByTestId(`tab-${ScreenName.SEARCH}`)).toBeTruthy();
+    expect(getByTestId(`tab-${ScreenName.NOTIFICATIONS}`)).toBeTruthy();
     expect(getByTestId(`tab-${ScreenName.PROFILE}`)).toBeTruthy();
   });
 
@@ -64,7 +77,7 @@ describe('BottomTabBar', () => {
   });
 
   it('marks the active tab as selected', () => {
-    const {getByTestId} = renderBar(2);
+    const {getByTestId} = renderBar(5);
     expect(
       getByTestId(`tab-${ScreenName.PROFILE}`).props.accessibilityState
         .selected,
