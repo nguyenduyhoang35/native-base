@@ -19,7 +19,7 @@ import {
 import ImagePicker, {Image, Options} from 'react-native-image-crop-picker';
 import {getFileUrl, throwError} from 'utils';
 import ImageWithAuth from './ImageWithAuth';
-import Text from 'components/core/Text';
+import {Text} from 'components/core';
 import {useColors} from 'providers/Theme';
 import {SvgXml} from 'react-native-svg';
 import {IconUploadAvatar} from 'assets/svgs/profile/upload-avatar';

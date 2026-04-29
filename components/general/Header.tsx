@@ -8,8 +8,7 @@ import {TUseNavigation} from 'types/react-navigation';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {TLanguageKey} from 'languages';
 import {useColors} from 'providers/Theme';
-import Button from 'components/core/Button';
-import Text from 'components/core/Text';
+import {Button, Text} from 'components/core';
 
 export const HEIGHT = 65;
 

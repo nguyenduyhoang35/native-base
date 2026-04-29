@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import Text from 'components/core/Text';
+import {Text} from 'components/core';
 import {useColors} from 'providers/Theme';
 import {IconCloseCircle} from 'assets/svgs/close-circle';
 

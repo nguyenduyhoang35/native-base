@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import {DimensionValue, TextInputProps, View} from 'react-native';
 import {useColors} from 'providers/Theme';
-import Input from 'components/core/Input';
+import {Input} from 'components/core';
 
 type Props = {
   value?: string;
