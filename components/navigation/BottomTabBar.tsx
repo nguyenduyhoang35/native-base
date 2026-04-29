@@ -2,7 +2,7 @@ import {IconHome} from 'assets/svgs/bottom-bar/home';
 import {IconSearch} from 'assets/svgs/bottom-bar/search';
 import {IconUserDefault} from 'assets/svgs/bottom-bar/userDefault';
 import {useColors} from 'providers/Theme';
-import {memo, useCallback, useMemo} from 'react';
+import {memo} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {images} from 'assets';
@@ -11,34 +11,42 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {shallowEqual, useSelector} from 'react-redux';
 import {modeSelector} from 'store/slices/user';
 import {ModeType} from 'types/user';
+import {ScreenName} from 'types/react-navigation';
 import FastImage from 'react-native-fast-image';
+
+type IconRenderer = (active: boolean, color: string) => string;
+
+type TabConfig = {
+  name: ScreenName;
+  icon: IconRenderer;
+  height: number;
+};
+
+const TABS: TabConfig[] = [
+  {
+    name: ScreenName.HOME,
+    icon: IconHome,
+    height: Platform.select({ios: 27, default: 20}) as number,
+  },
+  {
+    name: ScreenName.SEARCH,
+    icon: IconSearch,
+    height: Platform.select({ios: 25, default: 22}) as number,
+  },
+  {
+    name: ScreenName.PROFILE,
+    icon: IconUserDefault,
+    height: Platform.select({ios: 27, default: 20}) as number,
+  },
+];
 
 const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
   const colors = useColors();
   const {bottom} = useSafeAreaInsets();
   const mode = useSelector(modeSelector, shallowEqual);
 
-  const route = useMemo(
-    () => state.routes.find((_, i) => i === state.index),
-    [state.index, state.routes],
-  );
-
-  const getBg = useCallback(
-    (name: string) => {
-      if (route?.name === name) return colors.white;
-      return 'transparent';
-    },
-    [colors.white, route?.name],
-  );
-
-  const goto = useCallback(
-    (name: string) => {
-      (navigation as any).navigate(name);
-    },
-    [navigation],
-  );
-
-  const opacityBg = useMemo(() => (mode === ModeType.DARK ? 0.8 : 0.9), [mode]);
+  const activeName = state.routes[state.index]?.name;
+  const opacityBg = mode === ModeType.DARK ? 0.8 : 0.9;
 
   return (
     <View
@@ -56,33 +64,23 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
           ]}
         />
         <View style={styles.content}>
-          <Pressable
-            style={[styles.icon, {backgroundColor: getBg('HOME')}]}
-            onPress={() => goto('HOME')}>
-            <SvgXml
-              height={Platform.select({ios: 27, default: 20})}
-              xml={IconHome(route?.name === 'HOME', colors.primary)}
-            />
-          </Pressable>
-          <Pressable
-            style={[styles.icon, {backgroundColor: getBg('SEARCH')}]}
-            onPress={() => goto('SEARCH')}>
-            <SvgXml
-              height={Platform.select({ios: 25, default: 22})}
-              xml={IconSearch(route?.name === 'SEARCH', colors.primary)}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => goto('PROFILE')}
-            style={[styles.icon, {backgroundColor: getBg('PROFILE')}]}>
-            <SvgXml
-              height={Platform.select({ios: 27, default: 20})}
-              xml={IconUserDefault(
-                route?.name === 'PROFILE',
-                colors.primary,
-              )}
-            />
-          </Pressable>
+          {TABS.map(tab => {
+            const isActive = activeName === tab.name;
+            return (
+              <Pressable
+                key={tab.name}
+                onPress={() => navigation.navigate(tab.name)}
+                style={[
+                  styles.icon,
+                  {backgroundColor: isActive ? colors.white : 'transparent'},
+                ]}>
+                <SvgXml
+                  height={tab.height}
+                  xml={tab.icon(isActive, colors.primary)}
+                />
+              </Pressable>
+            );
+          })}
         </View>
       </View>
     </View>
