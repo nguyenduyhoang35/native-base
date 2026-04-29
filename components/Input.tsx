@@ -354,11 +354,7 @@ export const InputUploadFile = memo(function InputUploadFile({
             borderRadius={5}
           />
           <Text
-            style={{
-              maxWidth: '77%',
-              overflow: 'hidden',
-              color: colors.input.text,
-            }}
+            style={[styles.uploadFileName, {color: colors.input.text}]}
             numberOfLines={1}
             ellipsizeMode="tail">
             {value.name}
@@ -390,6 +386,10 @@ const styles = StyleSheet.create({
     height: 24,
     right: 16,
     top: 16,
+  },
+  uploadFileName: {
+    maxWidth: '77%',
+    overflow: 'hidden',
   },
 });
 
