@@ -5,6 +5,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Animated,
+  StyleSheet,
   type ViewStyle,
 } from 'react-native';
 
@@ -83,21 +84,29 @@ const Switch: React.FC<CustomSwitchProps> = ({
           style,
         ]}>
         <Animated.View
-          style={{
-            width: thumbSize,
-            height: thumbSize,
-            borderRadius: thumbSize / 2,
-            backgroundColor: colors.white,
-            transform: [{translateX}],
-            shadowOffset: {width: 0, height: 2},
-            shadowOpacity: 0.2,
-            shadowRadius: 2,
-            elevation: 2,
-          }}
+          style={[
+            thumbStyles.shadow,
+            {
+              width: thumbSize,
+              height: thumbSize,
+              borderRadius: thumbSize / 2,
+              backgroundColor: colors.white,
+              transform: [{translateX}],
+            },
+          ]}
         />
       </View>
     </TouchableWithoutFeedback>
   );
 };
+
+const thumbStyles = StyleSheet.create({
+  shadow: {
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+});
 
 export default Switch;
