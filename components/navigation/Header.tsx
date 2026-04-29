@@ -1,15 +1,7 @@
 import {images} from 'assets';
 import {useCallback, useMemo} from 'react';
-import {
-  Image,
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {Image, Pressable, StyleProp, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {stylesGlobal} from 'styles/global';
 import {useLanguage} from 'providers/Language';
 import {useNavigation} from '@react-navigation/native';
 import {TUseNavigation} from 'types/react-navigation';
@@ -67,14 +59,19 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
   if (!(options?.headerShown ?? true)) return null;
 
   return (
-    <View style={[stylesGlobal.pageHorizontal, {paddingTop: top}]}>
-      <View style={[styles.root, {height: HEIGHT}]}>
+    <View className="px-6" style={{paddingTop: top}}>
+      <View
+        className="flex-row items-center justify-between pb-5"
+        style={{height: HEIGHT}}>
         {options?.headerLeft?.({
           tintColor: options.headerTintColor,
           canGoBack,
         }) ?? (
-          <Pressable style={styles.logoRelative} onPress={onGotoHome}>
-            <Image style={styles.logo} source={images.LogoIcon} />
+          <Pressable className="relative" onPress={onGotoHome}>
+            <Image
+              style={{width: 44, height: 44}}
+              source={images.LogoIcon}
+            />
           </Pressable>
         )}
         {buttonRight}
@@ -83,32 +80,13 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
         <Text
           color={options.headerTintColor || colors.primary}
           fw={600}
-          style={[styles.title, options.headerTitleStyle]}>
+          fs={24}
+          style={options.headerTitleStyle}>
           {translate(options.title as TLanguageKey, undefined, options.title)}
         </Text>
       ) : null}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: 20,
-  },
-  logo: {width: 44, height: 44},
-  title: {fontSize: 24},
-  logoRelative: {position: 'relative'},
-  iconStory: {
-    position: 'absolute',
-    width: 16,
-    height: 16,
-    right: -10,
-    zIndex: 2,
-    top: 6,
-  },
-});
 
 export default Header;

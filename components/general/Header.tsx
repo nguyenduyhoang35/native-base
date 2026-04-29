@@ -1,14 +1,7 @@
 import {images} from 'assets';
 import {useMemo} from 'react';
-import {
-  Image,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {Image, StyleProp, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {stylesGlobal} from 'styles/global';
 import {useLanguage} from 'providers/Language';
 import {useNavigation} from '@react-navigation/native';
 import {TUseNavigation} from 'types/react-navigation';
@@ -41,7 +34,11 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
     if (!canGoBack || !(options?.headerBackVisible ?? true)) return null;
     return (
       <Button
-        style={[styles.btnBack, headerBackStyle, {borderColor: tintColor}]}
+        style={[
+          {width: 'auto', paddingHorizontal: 16, minWidth: 90},
+          headerBackStyle,
+          {borderColor: tintColor},
+        ]}
         outline
         onPress={navigation.goBack}
         text={options?.headerBackTitle ?? translate('back')}
@@ -62,14 +59,16 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
 
   return (
     <View style={[{backgroundColor: colors.background}, options?.headerStyle]}>
-      <View style={[stylesGlobal.pageHorizontal, {paddingTop: top}]}>
-        <View style={[styles.root, {height: HEIGHT}]}>
+      <View className="px-6" style={{paddingTop: top}}>
+        <View
+          className="w-full flex-row items-center justify-between pb-5"
+          style={{height: HEIGHT}}>
           {options?.headerLeft?.({
             tintColor: options.headerTintColor,
             canGoBack,
           }) ?? (
-            <View style={styles.logoRelative}>
-              <Image style={styles.logo} source={images.LogoIcon} />
+            <View className="relative">
+              <Image style={{width: 44, height: 44}} source={images.LogoIcon} />
             </View>
           )}
           {buttonRight}
@@ -78,7 +77,8 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
           <Text
             color={options.headerTintColor || colors.primary}
             fw={600}
-            style={[styles.title, options.headerTitleStyle]}>
+            fs={24}
+            style={options.headerTitleStyle}>
             {translate(options.title as TLanguageKey, undefined, options.title)}
           </Text>
         ) : null}
@@ -86,23 +86,5 @@ const Header = (props: Partial<Props<NativeStackHeaderProps>>) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: 20,
-    width: '100%',
-  },
-  logo: {width: 44, height: 44},
-  title: {fontSize: 24},
-  logoRelative: {position: 'relative'},
-  btnBack: {
-    width: 'auto',
-    paddingHorizontal: 16,
-    minWidth: 90,
-  },
-});
 
 export default Header;

@@ -40,6 +40,9 @@ const TABS: TabConfig[] = [
   },
 ];
 
+const BAR_HEIGHT = Platform.select({ios: 64, default: 60}) as number;
+const ICON_SIZE = Platform.select({ios: 44, default: 40}) as number;
+
 const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
   const colors = useColors();
   const {bottom} = useSafeAreaInsets();
@@ -50,20 +53,20 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
 
   return (
     <View
-      style={[
-        styles.rootWrap,
-        {bottom: bottom + Platform.select({android: 12, default: 6})},
-      ]}>
-      <View style={styles.root}>
+      className="absolute left-4 right-4 items-center"
+      style={{bottom: bottom + Platform.select({android: 12, default: 6})}}>
+      <View
+        className="relative w-full max-w-[360px]"
+        style={shadowStyle.bar}>
         <FastImage
           source={images.bottomBar[mode]}
           style={[
-            styles.background,
+            shadowStyle.background,
             StyleSheet.absoluteFill,
             {opacity: opacityBg},
           ]}
         />
-        <View style={styles.content}>
+        <View className="flex-1 flex-row justify-around items-center px-[18px]">
           {TABS.map(tab => {
             const isActive = activeName === tab.name;
             return (
@@ -73,10 +76,12 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
                 accessibilityRole="button"
                 accessibilityState={{selected: isActive}}
                 onPress={() => navigation.navigate(tab.name)}
-                style={[
-                  styles.icon,
-                  {backgroundColor: isActive ? colors.white : 'transparent'},
-                ]}>
+                className="items-center justify-center rounded-full"
+                style={{
+                  width: ICON_SIZE,
+                  height: ICON_SIZE,
+                  backgroundColor: isActive ? colors.white : 'transparent',
+                }}>
                 <SvgXml
                   height={tab.height}
                   xml={tab.icon(isActive, colors.primary)}
@@ -90,21 +95,9 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
   );
 };
 
-const BAR_HEIGHT = Platform.select({ios: 64, default: 60}) as number;
-const ICON_SIZE = Platform.select({ios: 44, default: 40}) as number;
-
-const styles = StyleSheet.create({
-  rootWrap: {
-    position: 'absolute',
-    left: 16,
-    right: 16,
-    alignItems: 'center',
-  },
-  root: {
+const shadowStyle = StyleSheet.create({
+  bar: {
     height: BAR_HEIGHT,
-    width: '100%',
-    maxWidth: 360,
-    position: 'relative',
     shadowColor: '#000',
     shadowOpacity: 0.18,
     shadowRadius: 16,
@@ -115,20 +108,6 @@ const styles = StyleSheet.create({
     borderRadius: BAR_HEIGHT / 2,
     overflow: 'hidden',
     height: BAR_HEIGHT,
-  },
-  content: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingHorizontal: 18,
-  },
-  icon: {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
-    borderRadius: ICON_SIZE / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
