@@ -73,11 +73,10 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
                 accessibilityState={{selected: isActive}}
                 onPress={() => navigation.navigate(tab.name)}
                 className="items-center justify-center rounded-full"
-                style={{
-                  width: ICON_SIZE,
-                  height: ICON_SIZE,
-                  backgroundColor: isActive ? '#ffffff' : 'transparent',
-                }}>
+                style={[
+                  iconStyle.size,
+                  isActive ? iconStyle.activeBg : iconStyle.transparentBg,
+                ]}>
                 <SvgXml
                   height={tab.height}
                   xml={tab.icon(isActive, colors.primary)}
@@ -104,6 +103,19 @@ const shadowStyle = StyleSheet.create({
     borderRadius: BAR_HEIGHT / 2,
     overflow: 'hidden',
     height: BAR_HEIGHT,
+  },
+});
+
+const iconStyle = StyleSheet.create({
+  size: {
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+  },
+  activeBg: {
+    backgroundColor: '#ffffff',
+  },
+  transparentBg: {
+    backgroundColor: 'transparent',
   },
 });
 
