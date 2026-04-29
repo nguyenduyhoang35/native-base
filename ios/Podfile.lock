@@ -3,7 +3,6 @@ PODS:
   - hermes-engine (250829098.0.10):
     - hermes-engine/Pre-built (= 250829098.0.10)
   - hermes-engine/Pre-built (250829098.0.10)
-  - IQKeyboardManagerSwift (6.5.16)
   - libwebp (1.5.0):
     - libwebp/demux (= 1.5.0)
     - libwebp/mux (= 1.5.0)
@@ -1899,10 +1898,6 @@ PODS:
     - React-utils (= 0.85.2)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.85.2)
-  - ReactNativeKeyboardManager (6.5.16-0):
-    - IQKeyboardManagerSwift (= 6.5.16)
-    - React-Core
-    - React-RCTText
   - RNCAsyncStorage (2.2.0):
     - hermes-engine
     - RCTRequired
@@ -2348,7 +2343,6 @@ DEPENDENCIES:
   - ReactCodegen (from `build/generated/ios/ReactCodegen`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
-  - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -2362,7 +2356,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - IQKeyboardManagerSwift
     - libwebp
     - SDWebImage
     - SDWebImageWebPCoder
@@ -2526,8 +2519,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDependencies:
     :podspec: "../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec"
-  ReactNativeKeyboardManager:
-    :path: "../node_modules/react-native-keyboard-manager"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFastImage:
@@ -2552,7 +2543,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBLazyVector: 26fd21c75314e101f280d401e97f27d54f3f7064
   hermes-engine: 64bf8f5de470a00608646dba4220040e6ad37e59
-  IQKeyboardManagerSwift: 12d89768845bb77b55cc092ecc2b1f9370f06b76
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   RCTDeprecation: c7a2768f905d76ca6d2cfefb26e4349eacbdfca3
   RCTRequired: 5e502c3553cfbed090a991c444448da452fb752e
@@ -2630,7 +2620,6 @@ SPEC CHECKSUMS:
   ReactCodegen: 97ed75bbf5f4a1113ba856658696d63d51289a22
   ReactCommon: 376f3a275bcf5e59a360e0b1762beb3bd41495ce
   ReactNativeDependencies: 4d8b03f3e9edd99c7bb993f71ea9cbb7b1e4e3cf
-  ReactNativeKeyboardManager: 704d89bde3cb1e0f432bc273a44eec96eab9d90f
   RNCAsyncStorage: 0f84413588571e74ef9cff6e3b669346e3abf9cb
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: 8f110d136971c0d720c3fe78dc352ccfce1cde9c
@@ -2645,6 +2634,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: df8920a8f8ca99996048f6aea23a529f44992eac
 
-PODFILE CHECKSUM: d5a252f3ca668100896d0630bf29dc06f48afd53
+PODFILE CHECKSUM: 8053c1beb67398b0330b803871408db613bc5cca
 
 COCOAPODS: 1.15.2

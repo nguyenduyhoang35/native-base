@@ -31,4 +31,32 @@ target 'MyApp' do
       # :ccache_enabled => true
     )
   end
+
+  post_integrate do |installer|
+    # Fix duplicate PrivacyInfo.xcprivacy error
+    # IQKeyboardManagerSwift's PrivacyInfo.xcprivacy conflicts with the app's aggregated one.
+    # This runs after CocoaPods writes all files, so our changes persist.
+    support_files_root = Pathname.new('Pods/Target Support Files/Pods-MyApp')
+
+    resources_script = support_files_root + 'Pods-MyApp-resources.sh'
+    if resources_script.exist?
+      content = resources_script.read
+      content.gsub!(/^\s*install_resource.*IQKeyboardManagerSwift.*PrivacyInfo\.xcprivacy.*\n/, '')
+      resources_script.write(content)
+    end
+
+    ['Debug', 'Release'].each do |cfg|
+      ['input', 'output'].each do |type|
+        file_list = support_files_root + "Pods-MyApp-resources-#{cfg}-#{type}-files.xcfilelist"
+        if file_list.exist?
+          content = file_list.read
+          # Remove IQKeyboardManagerSwift PrivacyInfo from input
+          content.gsub!(/^.*IQKeyboardManagerSwift.*PrivacyInfo\.xcprivacy.*\n/, '')
+          # Remove PrivacyInfo.xcprivacy from output (conflicts with app's own)
+          content.gsub!(/^.*UNLOCALIZED_RESOURCES_FOLDER_PATH\}\/PrivacyInfo\.xcprivacy\n/, '')
+          file_list.write(content)
+        end
+      end
+    end
+  end
 end
