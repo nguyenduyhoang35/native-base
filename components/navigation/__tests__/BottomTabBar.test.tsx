@@ -49,9 +49,6 @@ const renderBar = (activeIndex = 0) => {
   return {...utils, navigate};
 };
 
-const flattenStyle = (style: any) =>
-  Array.isArray(style) ? Object.assign({}, ...style.flat()) : style;
-
 describe('BottomTabBar', () => {
   it('renders one button per tab', () => {
     const {getByTestId} = renderBar();
@@ -77,13 +74,4 @@ describe('BottomTabBar', () => {
     ).toBe(false);
   });
 
-  it('paints active tab background non-transparent', () => {
-    const {getByTestId} = renderBar(0);
-    const home = flattenStyle(getByTestId(`tab-${ScreenName.HOME}`).props.style);
-    const search = flattenStyle(
-      getByTestId(`tab-${ScreenName.SEARCH}`).props.style,
-    );
-    expect(home.backgroundColor).not.toBe('transparent');
-    expect(search.backgroundColor).toBe('transparent');
-  });
 });

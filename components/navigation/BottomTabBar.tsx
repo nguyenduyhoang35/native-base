@@ -72,11 +72,10 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
                 accessibilityRole="button"
                 accessibilityState={{selected: isActive}}
                 onPress={() => navigation.navigate(tab.name)}
-                className="items-center justify-center rounded-full"
-                style={[
-                  iconStyle.size,
-                  isActive ? iconStyle.activeBg : iconStyle.transparentBg,
-                ]}>
+                className={`items-center justify-center rounded-full ${
+                  isActive ? 'bg-card' : ''
+                }`}
+                style={iconStyle.size}>
                 <SvgXml
                   height={tab.height}
                   xml={tab.icon(isActive, colors.primary)}
@@ -110,12 +109,6 @@ const iconStyle = StyleSheet.create({
   size: {
     width: ICON_SIZE,
     height: ICON_SIZE,
-  },
-  activeBg: {
-    backgroundColor: '#ffffff',
-  },
-  transparentBg: {
-    backgroundColor: 'transparent',
   },
 });
 
