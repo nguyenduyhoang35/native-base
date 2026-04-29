@@ -44,7 +44,7 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
     <View
       style={[
         styles.rootWrap,
-        {bottom: bottom + Platform.select({android: 10, default: 0})},
+        {bottom: bottom + Platform.select({android: 12, default: 6})},
       ]}>
       <View style={styles.root}>
         <FastImage
@@ -89,32 +89,45 @@ const BottomTabBar = ({state, navigation}: MaterialTopTabBarProps) => {
   );
 };
 
+const BAR_HEIGHT = Platform.select({ios: 64, default: 60}) as number;
+const ICON_SIZE = Platform.select({ios: 44, default: 40}) as number;
+
 const styles = StyleSheet.create({
-  rootWrap: {position: 'absolute', alignSelf: 'center'},
+  rootWrap: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    alignItems: 'center',
+  },
   root: {
-    height: Platform.select({ios: 65, default: 60}),
-    alignSelf: 'center',
+    height: BAR_HEIGHT,
+    width: '100%',
+    maxWidth: 360,
     position: 'relative',
-    minWidth: 348,
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    shadowOffset: {width: 0, height: 8},
+    elevation: 12,
   },
   background: {
-    borderRadius: 173,
+    borderRadius: BAR_HEIGHT / 2,
     overflow: 'hidden',
-    height: Platform.select({ios: 65, default: 60}),
+    height: BAR_HEIGHT,
   },
   content: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 18,
   },
   icon: {
-    width: Platform.select({ios: 45, default: 40}),
-    height: Platform.select({ios: 45, default: 40}),
-    borderRadius: 26,
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
   },
 });
 
